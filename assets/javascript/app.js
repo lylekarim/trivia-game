@@ -22,75 +22,102 @@ $(document).ready(function () {
 
 
     //  Variable that will hold our setInterval that runs the stopwatch
-    var intervalId;
+
     var count = 15;
     // prevents the clock from being sped up unnecessarily
     var clockRunning = false;
     var questionNumber = [1, 2, 3, 4, 5];
-
-
-    // Variable to hold the index of current question.
     var questionIndex = 0;
+  var IntID = setTimer();
 
-    // questionNumber.forEach(function (element) {
+  
 
-    var timer = setInterval(function () {
+    function stopTimer() {
+        clearInterval(IntID);
+        count = 15;
+        clockRunning = false;
+        questionIndex++;
+        $('#display').html(count + ' seconds');
+        $('#test').html(' question' + questionIndex);
 
-
-        if (questionIndex === questionNumber.length) {
-            return;
-        }
-
-
-        else if ((count !== 0) && (questionIndex <= (questionNumber.length - 1))) {
-
-            //  questionIndex = questionNumber[i];
-            $('#test').html(' question' + questionIndex);
-            $('#display').html(count - 1 + ' seconds');
-            clockRunning = true;
-            count--;
-            console.log(questionIndex + "  1st condition");
+        console.log(questionIndex + "  second condition");
+    }
 
 
+    function setTimer() {
+        j = setInterval(setTimer, 1000);
+        count--;
+        
+    // return j;
+    if (questionIndex === questionNumber.length) {
+        return;
+        
+    }
 
-        } else {
-            clearInterval(timer);
-            count = 15;
-            clockRunning = false;
-            questionIndex++;
-            $('#display').html(count + ' seconds');
-            $('#test').html(' question' + questionIndex);
-            
-            console.log(questionIndex + "  second condition");
-            startTimer();
+    else if ((count !== 0) && (questionIndex <= (questionNumber.length - 1))) {
+ 
+        clockRunning = true;
+        $('#test').html(' question' + questionIndex);
+        $('#display').html(count - 1 + ' seconds');
+      
+       
+        console.log(questionIndex + "  1st condition");
 
 
-        }
+    } else if ((count === 0) && (questionIndex <= (questionNumber.length - 1))) {
+        stopTimer();
+        clockRunning = false;
 
+      //  restartTimer();
 
-    }, 1000);
+    }
+
+    }
+
+  
 
     //next question
     questionIndex++;
     console.log(questionIndex)
 
-    //reset timer
-    var startTimer = setInterval(function () {
+
+    //Restart Timer
+    // Option 1 make a restartSlider function and call it
+    $("#test2").click(restartTimer);
+    function restartTimer() {
+        IntID = setTimer();
         $('#test').html(' question' + questionIndex);
         $('#display').html(count - 1 + ' seconds');
         clockRunning = true;
-        
-        if ((count === 0) && (questionIndex >= (questionNumber.length - 1))) {
-            console.log("Time's up");
-            clearInterval(timer);
-            clockRunning = false;
-            count = 15;
+        count--;
+        console.log(questionIndex + "  restsrt condition");
 
-        }
+    }
 
-    }, 1000)
+    //Option 2 create an anonymous function only for that click event.
+    $("#test2").click(function () {
+        IntID = setTimer();
+    });
 
 
+
+
+
+    // function startTimer(){
+    //     clockRunning = true;
+    //     setInterval(startTimer, 1000);
+    //     count--;
+    //     $('#display').html((count - 1) + ' seconds');
+    //     $('#test').html(' question' + questionIndex);
+
+    //     if (count === 0) {
+    //                 console.log("Time's up");
+    //                 clearInterval(startTimer);
+    //                 clockRunning = false;
+
+
+    //             }
+    // }
 
 
     // function renderQuestion() {
@@ -110,19 +137,6 @@ $(document).ready(function () {
 
 
 });
-
-
-// function start() {
-//   intervalId = setInterval(count, 1000);
-// }
-
-// function stop() {
-
-//   console.log("stopping");
-//   clearInterval(intervalId);
-
-// }
-
 
 
 
