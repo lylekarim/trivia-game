@@ -1,3 +1,8 @@
+//this code below is just for my reference. 
+
+// var sec = 15;
+// var time = setInterval(myTimer, 1000);
+
 // $(document).ready(function () {
 
 //     var timer = setInterval(function () {
@@ -11,6 +16,7 @@
 //     }, 1000);
 // });
 
+
 //create a timer that count down to zero
 $(document).ready(function () {
 
@@ -21,97 +27,84 @@ $(document).ready(function () {
     // prevents the clock from being sped up unnecessarily
     var clockRunning = false;
     var questionNumber = [1, 2, 3, 4, 5];
+    var questionIndex = "";
     var currentQuestion = "";
 
     var nextQuestion = "";
 
+    
+
+   // questionNumber.forEach(function (element) {
+
+        var timer = setInterval(function () {
+
+            //  for (var i = 0; i < questionNumber.length; i++) {
+
+
+          //  currentQuestion = questionNumber[i];
+
+            if (questionIndex === questionNumber.length) {
+                return;
+              }
+        
+
+            else if (count !== 0) {
+
+                //  currentQuestion = questionNumber[i];
+                $('#test').html(' question' + currentQuestion);
+                $('#display').html(count - 1 + ' seconds');
+                clockRunning = true;
+                count--;
 
 
 
-    questionNumber.forEach(function (element) {
+            } else {
+                clearInterval(timer);
+                count = 15;
+                clockRunning = false;
+                startTimer();
+                console.log(currentQuestion);
 
-            var timer = setInterval(function () {
-
-                for (var i = 0; i < questionNumber.length; i++) {
-
-
-                    currentQuestion = questionNumber[i];
-       
-
-
-                if (count !== 0) {
-
-                  //  currentQuestion = questionNumber[i];
-                  $('#test').html(' question' + currentQuestion);
-                    $('#display').html(count - 1 + ' seconds');
-                    clockRunning = true;
-                    count--;
-
-                   
-
-                } else {
-                    clearInterval(timer);
-                    count = 15;
-                    clockRunning = false;
-
-                    console.log(currentQuestion);
-
-                }
             }
-          
-            }, 1000);
-      
+            // }
+
+        }, 1000);
+
     });
 
 
-});
-
-    // for (var i = 0; i < questionNumber.length; i++) {
-    //     count = 15;
-
-    //     if (questionNumber.length > 1) {
-
-    // var timer = setInterval(function () {
-
-    //     if (count !== 0) {
-
-    //         $('#display').html(count - 1 + ' seconds');
-    //         clockRunning = true;
-    //         count--;
 
 
 
-    //     } else {
-
-    //         clearInterval(timer);
-    //         count = 15;
-    //         clockRunning = false;
-    //         console.log(questionNumber[0 + 1]);
-
-    //     }
-    // }, 1000);
-    // console.log(questionNumber[0]);
-    //  }
 
 
 
 //nextQuestion
 
+
+var startTimer = (timer) => {
+    clockRunning = true;
+    let seconds = 15
+    timer = setInterval(() => {
+        console.log(seconds)
+        seconds--
+        if (seconds === 0) {
+            console.log("Time's up")
+            clearInterval(timer)
+        }
+    }, 1000)
+}
+
 //reset timer
 //change to next question in array
-//set clockRunning to true;
+// Function to render questions.
+function renderQuestion() {
+    count = 15;
+    clockRunning = true;
+    startTimer();
 
-// function nextQuestion() {
-//     clockRunning = true;
-
-
-// }
-
-
-
-
-
-
+}
+  
 
 // function start() {
 //   intervalId = setInterval(count, 1000);
@@ -136,5 +129,10 @@ $(document).ready(function () {
 
 
 //store and display wins, losses, unguessed
+
+
+  });
+//create a form with 10 radio button questions 
+
 
 
