@@ -27,10 +27,7 @@ $(document).ready(function () {
     // prevents the clock from being sped up unnecessarily
     var clockRunning = false;
     var questionNumber = [1, 2, 3, 4, 5];
-    var questionIndex = "";
-    var currentQuestion = "";
 
-    var nextQuestion = "";
 
     // Variable to hold the index of current question.
     var questionIndex = 0;
@@ -39,10 +36,6 @@ $(document).ready(function () {
 
     var timer = setInterval(function () {
 
-        //  for (var i = 0; i < questionNumber.length; i++) {
-
-
-        //  currentQuestion = questionNumber[i];
 
         if (questionIndex === questionNumber.length) {
             return;
@@ -51,8 +44,8 @@ $(document).ready(function () {
 
         else if ((count !== 0) && (questionIndex <= (questionNumber.length - 1))) {
 
-            //  currentQuestion = questionNumber[i];
-            $('#test').html(' question' + currentQuestion);
+            //  questionIndex = questionNumber[i];
+            $('#test').html(' question' + questionIndex);
             $('#display').html(count - 1 + ' seconds');
             clockRunning = true;
             count--;
@@ -63,10 +56,10 @@ $(document).ready(function () {
             count = 15;
             clockRunning = false;
             startTimer();
-            console.log(currentQuestion);
+            console.log(questionIndex);
 
         }
-
+     
 
     }, 1000);
 
@@ -79,21 +72,22 @@ $(document).ready(function () {
     // Function to render questions.
 
 
-    function renderQuestion() {
-        count = 15;
-        clockRunning = true;
-        startTimer();
-        // If there are still more questions, render the next one.
-        if (questionIndex <= (questions.length - 1)) {
-            document.querySelector("#question").innerHTML = questionNumber[questionIndex].q;
-        }
-        // If there aren't, render the end game screen.
-        else {
-            //   document.querySelector("#question").innerHTML = "Game Over!";
-            //    document.querySelector("#score").innerHTML = "Final Score: " + score + " out of " + questions.length;
-        }
-    }
+    // function renderQuestion() {
+    //     count = 15;
+    //     clockRunning = true;
+    //     startTimer();
+    //     // If there are still more questions, render the next one.
+    //     if (questionIndex <= (questions.length - 1)) {
+    //         document.querySelector("#question").innerHTML = questionNumber[questionIndex].q;
+    //     }
+    //     // If there aren't, render the end game screen.
+    //     else {
+    //         //   document.querySelector("#question").innerHTML = "Game Over!";
+    //         //    document.querySelector("#score").innerHTML = "Final Score: " + score + " out of " + questions.length;
+    //     }
+    // }
     var startTimer = (timer) => {
+        questionIndex++;
         clockRunning = true;
         let seconds = 15
         timer = setInterval(() => {
