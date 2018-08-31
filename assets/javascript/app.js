@@ -32,79 +32,82 @@ $(document).ready(function () {
 
     var nextQuestion = "";
 
-    
+    // Variable to hold the index of current question.
+    var questionIndex = 0;
 
-   // questionNumber.forEach(function (element) {
+    // questionNumber.forEach(function (element) {
 
-        var timer = setInterval(function () {
+    var timer = setInterval(function () {
 
-            //  for (var i = 0; i < questionNumber.length; i++) {
-
-
-          //  currentQuestion = questionNumber[i];
-
-            if (questionIndex === questionNumber.length) {
-                return;
-              }
-        
-
-            else if (count !== 0) {
-
-                //  currentQuestion = questionNumber[i];
-                $('#test').html(' question' + currentQuestion);
-                $('#display').html(count - 1 + ' seconds');
-                clockRunning = true;
-                count--;
+        //  for (var i = 0; i < questionNumber.length; i++) {
 
 
+        //  currentQuestion = questionNumber[i];
 
-            } else {
-                clearInterval(timer);
-                count = 15;
-                clockRunning = false;
-                startTimer();
-                console.log(currentQuestion);
-
-            }
-            // }
-
-        }, 1000);
-
-    });
-
-
-
-
-
-
-
-
-//nextQuestion
-
-
-var startTimer = (timer) => {
-    clockRunning = true;
-    let seconds = 15
-    timer = setInterval(() => {
-        console.log(seconds)
-        seconds--
-        if (seconds === 0) {
-            console.log("Time's up")
-            clearInterval(timer)
+        if (questionIndex === questionNumber.length) {
+            return;
         }
-    }, 1000)
-}
 
-//reset timer
-//change to next question in array
-// Function to render questions.
-function renderQuestion() {
-    count = 15;
-    clockRunning = true;
-    startTimer();
 
-}
-  
+        else if ((count !== 0) && (questionIndex <= (questionNumber.length - 1))) {
+
+            //  currentQuestion = questionNumber[i];
+            $('#test').html(' question' + currentQuestion);
+            $('#display').html(count - 1 + ' seconds');
+            clockRunning = true;
+            count--;
+
+
+        } else {
+            clearInterval(timer);
+            count = 15;
+            clockRunning = false;
+            startTimer();
+            console.log(currentQuestion);
+
+        }
+
+
+    }, 1000);
+
+    //go to nextQuestion
+    questionIndex++;
+
+
+    //reset timer
+    //change to next question in array
+    // Function to render questions.
+
+
+    function renderQuestion() {
+        count = 15;
+        clockRunning = true;
+        startTimer();
+        // If there are still more questions, render the next one.
+        if (questionIndex <= (questions.length - 1)) {
+            document.querySelector("#question").innerHTML = questionNumber[questionIndex].q;
+        }
+        // If there aren't, render the end game screen.
+        else {
+            //   document.querySelector("#question").innerHTML = "Game Over!";
+            //    document.querySelector("#score").innerHTML = "Final Score: " + score + " out of " + questions.length;
+        }
+    }
+    var startTimer = (timer) => {
+        clockRunning = true;
+        let seconds = 15
+        timer = setInterval(() => {
+            console.log(seconds)
+            seconds--
+            if (seconds === 0) {
+                console.log("Time's up")
+                clearInterval(timer)
+            }
+        }, 1000)
+    }
+
+});
+
 
 // function start() {
 //   intervalId = setInterval(count, 1000);
@@ -131,7 +134,7 @@ function renderQuestion() {
 //store and display wins, losses, unguessed
 
 
-  });
+
 //create a form with 10 radio button questions 
 
 
