@@ -49,27 +49,48 @@ $(document).ready(function () {
             $('#display').html(count - 1 + ' seconds');
             clockRunning = true;
             count--;
+            console.log(questionIndex + "  1st condition");
+
 
 
         } else {
             clearInterval(timer);
             count = 15;
             clockRunning = false;
+            questionIndex++;
+            $('#display').html(count + ' seconds');
+            $('#test').html(' question' + questionIndex);
+            
+            console.log(questionIndex + "  second condition");
             startTimer();
-            console.log(questionIndex);
+
 
         }
-     
+
 
     }, 1000);
 
-    //go to nextQuestion
+    //next question
     questionIndex++;
-
+    console.log(questionIndex)
 
     //reset timer
-    //change to next question in array
-    // Function to render questions.
+    var startTimer = setInterval(function () {
+        $('#test').html(' question' + questionIndex);
+        $('#display').html(count - 1 + ' seconds');
+        clockRunning = true;
+        
+        if ((count === 0) && (questionIndex >= (questionNumber.length - 1))) {
+            console.log("Time's up");
+            clearInterval(timer);
+            clockRunning = false;
+            count = 15;
+
+        }
+
+    }, 1000)
+
+
 
 
     // function renderQuestion() {
@@ -86,19 +107,7 @@ $(document).ready(function () {
     //         //    document.querySelector("#score").innerHTML = "Final Score: " + score + " out of " + questions.length;
     //     }
     // }
-    var startTimer = (timer) => {
-        questionIndex++;
-        clockRunning = true;
-        let seconds = 15
-        timer = setInterval(() => {
-            console.log(seconds)
-            seconds--
-            if (seconds === 0) {
-                console.log("Time's up")
-                clearInterval(timer)
-            }
-        }, 1000)
-    }
+
 
 });
 
