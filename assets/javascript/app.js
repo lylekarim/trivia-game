@@ -1,158 +1,163 @@
-//this code below is just for my reference. 
+window.onload = function () {
 
-// var sec = 15;
-// var time = setInterval(myTimer, 1000);
+    // VARIABLES
+    // ==========================================================================
 
-// $(document).ready(function () {
+    // The array of questions for our quiz game.
+    var questions = [
+        { q: "The sky is what color?", a: "t" },
+        { q: "How many days in a non-leap year?", a: "t" },
+        { q: "How many ounces in a pound?", a: "f" },
+        { q: "When was The Declaration of Independence signed?", a: "f" },
+        { q: "Is Nemo Cute?", a: "f" }
+    ];
 
-//     var timer = setInterval(function () {
+    var answers = [
+        { o: "1. blue<BR> 2. yellow<BR> 3. pink<BR>", c: "1", },
+        { o: "1. 364<BR> 2. 365<BR> 3. 400<BR>", c: "2", },
+        { o: "1. 10<BR> 2. 11<BR> 3. 16<BR>", c: "3", },
+        { o: "1. 1899<BR> 2. 1925<BR> 3. 1776<BR>", c: "3", },
+        { o: "1. Yes<BR> 2. Extremly<BR> 3. Totally<BR>", c: "2", }
+    ];
 
-//         var count = parseInt($('#theTarget').html());
-//         if (count !== 0) {
-//             $('#theTarget').html(count - 1);
-//         } else {
-//             clearInterval(timer);
-//         }
-//     }, 1000);
-// });
-
-
-//create a timer that count down to zero
-$(document).ready(function () {
-
-
-    //  Variable that will hold our setInterval that runs the stopwatch
-
-    var count = 15;
-    // prevents the clock from being sped up unnecessarily
-    var clockRunning = false;
-    var questionNumber = [1, 2, 3, 4, 5];
+    // We start the game with a score of 0.
+    var score = 0;
+    // Variable to hold the index of current question.
     var questionIndex = 0;
-  var IntID = setTimer();
+    var answerIndex = 0;
+    var intervalID;
+    var clockRunning = false;
 
-  
 
-    function stopTimer() {
-        clearInterval(IntID);
-        count = 15;
-        clockRunning = false;
+    // FUNCTIONS
+    // ==============================================================================
+
+    function startTimer(duration, display) {
+        clockRunning = true;
+        var timer = duration, seconds;
+        intervalID =
+            setInterval(function () {
+                //minutes = parseInt(timer / 60, 10)
+                seconds = parseInt(timer % 60, 10);
+
+                //minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+                display.innerHTML = seconds;
+
+                if (--timer < -1) {
+                    timer = duration;
+                
+                    clockRunning = false;
+                  
+                    //This clears the interval to reset at 0
+                    clearInterval(intervalID);
+                    setTimeout(explode, 2000);
+                
+                
+                }
+
+            }, 1000);
+
+    }
+
+    function explode(){
+        alert("Boom!");
         questionIndex++;
-        $('#display').html(count + ' seconds');
-        $('#test').html(' question' + questionIndex);
+        renderQuestion();
+        showTimer();
 
-        console.log(questionIndex + "  second condition");
+      }
+     
+
+
+    // Function to render questions.
+    function renderQuestion() {
+
+        // If there are still more questions, render the next one.
+        if ((questionIndex <= (questions.length - 1))) {
+            {
+                document.getElementById('question').innerHTML = questions[questionIndex].q;
+                document.getElementById('answerOptions1').innerHTML = answers[questionIndex].o
+            }
+        }
+
+
+
+        // If there aren't, render the end game screen.
+        else {
+            document.getElementById("question").innerHTML = "Game Over!";
+            document.getElementById("score").innerHTML = "Final Score: " + score + " out of " + questions.length;
+            document.getElementById("answerOptions1").innerHTML = "Thanks for playing!!";
+            document.getElementById("timer").innerHTML = "Nemo is super cutes!!";
+        }
+    }
+
+    // Function that updates the score...
+    function updateScore() {
+        document.getElementById("score").innerHTML = "Score: " + score;
+    }
+
+    //This returns the intervalID so it can be reset between questions, then again we could make it a global too
+    function showTimer() {
+        var timerForQuestion = 15;
+        display = document.getElementById("timer");
+        startTimer(timerForQuestion, display);
     }
 
 
-    function setTimer() {
-        j = setInterval(setTimer, 1000);
-        count--;
-        
-    // return j;
-    if (questionIndex === questionNumber.length) {
-        return;
-        
-    }
+    // MAIN PROCESS
+    // ==============================================================================
 
-    else if ((count !== 0) && (questionIndex <= (questionNumber.length - 1))) {
- 
-        clockRunning = true;
-        $('#test').html(' question' + questionIndex);
-        $('#display').html(count - 1 + ' seconds');
-      
-       
-        console.log(questionIndex + "  1st condition");
+    // Calling functions to start the game.    
+
+    renderQuestion();
+    updateScore();
+    showTimer();
 
 
-    } else if ((count === 0) && (questionIndex <= (questionNumber.length - 1))) {
-        stopTimer();
-        clockRunning = false;
-
-      //  restartTimer();
-
-    }
-
-    }
-
-  
-
-    //next question
-    questionIndex++;
-    console.log(questionIndex)
+    // When the user presses a key, it will run the following function...   
+    document.onkeyup = function (event) {
 
 
-    //Restart Timer
-    // Option 1 make a restartSlider function and call it
-    $("#test2").click(restartTimer);
-    function restartTimer() {
-        IntID = setTimer();
-        $('#test').html(' question' + questionIndex);
-        $('#display').html(count - 1 + ' seconds');
-        clockRunning = true;
-        count--;
-        console.log(questionIndex + "  restsrt condition");
+        // If there are no more questions, stop the function and show the closing screens.
+        if (questionIndex === questions.length) {
+            return;
+        }
 
-    }
+        // Determine which key was pressed, make it lowercase, and set it to the userInput variable.
+        var userInput = event.key.toLowerCase();
 
-    //Option 2 create an anonymous function only for that click event.
-    $("#test2").click(function () {
-        IntID = setTimer();
-    });
+        // Only run this code if "1" or "2"  or "3" are pressed.
+        if (userInput === "1" || userInput === "2" || userInput === "3") {
+
+            // If they guess the correct answer, increase and update score, alert them they got it right.
+            if (userInput === answers[questionIndex].c) {
+                clockRunning = false;
+                alert("Correct!");
+                score++;
+                updateScore();
+            }
+            // If wrong, alert them they are wrong.
+
+            else {
+                clockRunning = false;
+                alert("Wrong!");
+            }
+
+            // Increment the questionIndex variable and call the renderQuestion function.
+
+            questionIndex++;
+            clockRunning = false;
+            renderQuestion();
+            //This clears the interval to reset at 0
+            clearInterval(intervalID);
+            showTimer();
+        }
+    };
 
 
 
 
-
-    // function startTimer(){
-    //     clockRunning = true;
-    //     setInterval(startTimer, 1000);
-    //     count--;
-    //     $('#display').html((count - 1) + ' seconds');
-    //     $('#test').html(' question' + questionIndex);
-
-    //     if (count === 0) {
-    //                 console.log("Time's up");
-    //                 clearInterval(startTimer);
-    //                 clockRunning = false;
-
-
-    //             }
-    // }
-
-
-    // function renderQuestion() {
-    //     count = 15;
-    //     clockRunning = true;
-    //     startTimer();
-    //     // If there are still more questions, render the next one.
-    //     if (questionIndex <= (questions.length - 1)) {
-    //         document.querySelector("#question").innerHTML = questionNumber[questionIndex].q;
-    //     }
-    //     // If there aren't, render the end game screen.
-    //     else {
-    //         //   document.querySelector("#question").innerHTML = "Game Over!";
-    //         //    document.querySelector("#score").innerHTML = "Final Score: " + score + " out of " + questions.length;
-    //     }
-    // }
-
-
-});
-
-
-
-
-//create a form with 10 radio button questions 
-
-
-
-
-
-
-//store and display wins, losses, unguessed
-
-
-
-//create a form with 10 radio button questions 
-
+}
 
 
