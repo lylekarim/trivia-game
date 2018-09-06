@@ -1,0 +1,94 @@
+body,
+html {
+    height: 100%;
+}
+
+body {
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    background-image: url(https://celebrateurbanbirds.org/wp-content/uploads/2016/09/stock-photo-cat-watching-bird-on-the-window-133222604-1920x1233.jpg);
+    /* Full height */
+    height: 100%;
+    min-height: 390px;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #b3b3b3;
+
+}
+
+.opaque {
+
+    background: linear-gradient(rgba(255, 255, 255, 0.42), rgb(255, 255, 255));
+    min-height: 300px;
+
+}
+
+h1 {
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    line-height: 1.5;
+    color: #333;
+
+}
+
+#question {
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 2rem;
+    line-height: 1.2;
+    color: rgb(234, 33, 225);
+
+}
+
+#timer {
+    font-size: 4rem;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #c83eda !important;
+    text-align: center;
+
+    line-height: 1.5;
+    color: #333;
+    height:80px;
+
+}
+
+.form-check-label {
+
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1.8rem;
+    line-height: 2;
+    color: rgb(85, 10, 155);
+}
+.form-check-inline {
+
+    display:block;
+}
+
+
+#response {
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 2rem;
+    line-height: 1.5;
+    color: rgb(251, 122, 5)
+}
+
+#score {
+
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 2rem;
+    line-height: 1.5;
+    color: #333;
+}
+
+
+/* .img-responsive {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    min-height:390px;
+
+} */
