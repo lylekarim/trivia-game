@@ -1,39 +1,45 @@
-window.onload = function () {
+$(document).ready(function () {
 
     // VARIABLES
     // ==========================================================================
 
     // The array of questions for our quiz game.
-    var questions = [
-        { q: "The sky is what color?", a: "t" },
-        { q: "How many days in a non-leap year?", a: "t" },
-        { q: "How many ounces in a pound?", a: "f" },
-        { q: "When was The Declaration of Independence signed?", a: "f" },
-        { q: "Is Nemo Cute?", a: "f" }
-    ];
+    var questions =
+        ["What is the scientific name of the American Robin", "If you see a hummingbird on the East Coast during the summer, what kind is it most likely?", "Which bird did Ben Franklin call a \"Bird of bad moral Character\"", "Which woodpecker bores holes in trees for acorn storage?", "Which bird has up to 200 songs, and is known to mimic sounds in their environment including car alarms, and creaky gates"];
+
 
     var answers = [
-        { o: "1. blue<BR> 2. yellow<BR> 3. pink<BR>", c: "1", },
-        { o: "1. 364<BR> 2. 365<BR> 3. 400<BR>", c: "2", },
-        { o: "1. 10<BR> 2. 11<BR> 3. 16<BR>", c: "3", },
-        { o: "1. 1899<BR> 2. 1925<BR> 3. 1776<BR>", c: "3", },
-        { o: "1. Yes<BR> 2. Extremly<BR> 3. Totally<BR>", c: "2", }
+        { o: ["1.Turdus migratorius", "2.Cygnus Atratus", "3.Tyrannus tyrannus"], c: ["1"] },
+        { o: ["1.Anna's Hummingbird", "2.Ruby-throated Hummingbird", "3.Costa's Hummingbird"], c: ["2"] },
+        { o: ["1.Pygmy Nuthatch", "2.Bushtit", "3.Bald Eagle"], c: ["3"] },
+        { o: ["1.Pileated Woodpecker", "2.Woody Woodpecker", "3.Acorn Woodpecker"], c: ["3"] },
+        { o: ["1.Whip-poor-will", "2.Northern Mockingbird", "3.Yellow Warbler"], c: ["2"] }
     ];
+
+
+
+
+    var radioAnswers = [];
+    var computerChoices = "";
+    var newAnswer = [];
+
 
     // We start the game with a score of 0.
     var score = 0;
     // Variable to hold the index of current question.
+    
     var questionIndex = 0;
-    var answerIndex = 0;
+
+    // Variable to hold the intervalID so we can use it to reset
     var intervalID;
-    var clockRunning = false;
+
 
 
     // FUNCTIONS
     // ==============================================================================
 
     function startTimer(duration, display) {
-        clockRunning = true;
+
         var timer = duration, seconds;
         intervalID =
             setInterval(function () {
@@ -44,66 +50,100 @@ window.onload = function () {
                 seconds = seconds < 10 ? "0" + seconds : seconds;
                 display.innerHTML = seconds;
 
-                if (--timer < -1) {
+                if (--timer < 0) {
                     timer = duration;
-                
-                    clockRunning = false;
-                  
+                    timeoutResponse();
                     //This clears the interval to reset at 0
                     clearInterval(intervalID);
-                    setTimeout(explode, 2000);
-                
-                
+                    setTimeout(interstitial, 2000);
                 }
 
             }, 1000);
 
     }
 
-    function explode(){
-        alert("Boom!");
+//what to do after setTimeout
+
+    function interstitial() {
         questionIndex++;
         renderQuestion();
         showTimer();
 
-      }
-     
+    }
+
+    function timeoutResponse() {
+        $("#timer").empty();
+        $('#question').html('Times Up!! The correct answer is  ' + answers[questionIndex].c);
+
+    }
+
+    function correctResponse() {
+        $("#timer").empty();
+        $('#question').html('Right - the answer is ' + answers[questionIndex].c);
+        score ++;
+    }
+
+    function wrongResponse() {
+        $("#timer").empty();
+        $('#question').html('Wrong - the answer is ' + answers[questionIndex].c);
+    }
+
 
 
     // Function to render questions.
     function renderQuestion() {
+        $('form').show();
+        $("#firstChoice, #secondChoice, #thirdChoice, #response").empty();
+        $('input[type=radio]').prop('checked', false);
 
         // If there are still more questions, render the next one.
         if ((questionIndex <= (questions.length - 1))) {
-            {
-                document.getElementById('question').innerHTML = questions[questionIndex].q;
-                document.getElementById('answerOptions1').innerHTML = answers[questionIndex].o
-            }
-        }
 
+            $("#question").html(questions[questionIndex]);
+
+            radioAnswers = [];
+
+            //add key to list of user choices array
+            radioAnswers.push(answers[questionIndex].o);
+            computerChoices = radioAnswers.toString();
+            newAnswer = computerChoices.split(',');
+
+            $('#firstChoice').html(newAnswer[0]);
+            $('#secondChoice').html(newAnswer[1]);
+            $('#thirdChoice').html(newAnswer[2]);
+
+        }
 
 
         // If there aren't, render the end game screen.
         else {
-            document.getElementById("question").innerHTML = "Game Over!";
-            document.getElementById("score").innerHTML = "Final Score: " + score + " out of " + questions.length;
-            document.getElementById("answerOptions1").innerHTML = "Thanks for playing!!";
-            document.getElementById("timer").innerHTML = "Nemo is super cutes!!";
+            $('#question').html("Game Over!");
+            $('#score').html("Final Score: " + score + " out of " + questions.length);
+            $('form').hide();
+
         }
     }
 
     // Function that updates the score...
     function updateScore() {
-        document.getElementById("score").innerHTML = "Score: " + score;
+        $('#score').html("Score: " + score);
     }
 
     //This returns the intervalID so it can be reset between questions, then again we could make it a global too
     function showTimer() {
-        var timerForQuestion = 15;
-        display = document.getElementById("timer");
-        startTimer(timerForQuestion, display);
-    }
 
+        if ((questionIndex <= (questions.length - 1))) {
+            var timerForQuestion = 15;
+            display = document.getElementById("timer");
+            startTimer(timerForQuestion, display);
+
+        } else {
+
+            $("#timer").empty();
+            $("#firstChoice, #secondChoice, #thirdChoice, #response").empty();
+
+        }
+    }
 
     // MAIN PROCESS
     // ==============================================================================
@@ -115,49 +155,43 @@ window.onload = function () {
     showTimer();
 
 
-    // When the user presses a key, it will run the following function...   
-    document.onkeyup = function (event) {
+    // When the user makes a selection, it will run the following function...   
+    $(document).on('change', '[type="radio"]', function () {
 
+        var currentlyValue = $(this).val(); // Get the radio checked value
 
         // If there are no more questions, stop the function and show the closing screens.
         if (questionIndex === questions.length) {
             return;
         }
 
-        // Determine which key was pressed, make it lowercase, and set it to the userInput variable.
-        var userInput = event.key.toLowerCase();
-
-        // Only run this code if "1" or "2"  or "3" are pressed.
-        if (userInput === "1" || userInput === "2" || userInput === "3") {
+        // Only run this code if  option "1" or "2"  or "3" are selected
+       // if (currentlyValue === "1" || currentlyValue === "2" || currentlyValue === "3") {
 
             // If they guess the correct answer, increase and update score, alert them they got it right.
-            if (userInput === answers[questionIndex].c) {
-                clockRunning = false;
-                alert("Correct!");
-                score++;
+
+            if (currentlyValue === (answers[questionIndex].c).toString()) {
+
+                correctResponse();
+                clearInterval(intervalID);
+                setTimeout(interstitial, 5000);
                 updateScore();
             }
             // If wrong, alert them they are wrong.
 
             else {
-                clockRunning = false;
-                alert("Wrong!");
+
+                wrongResponse();
+                clearInterval(intervalID);
+                setTimeout(interstitial, 5000);
             }
 
-            // Increment the questionIndex variable and call the renderQuestion function.
-
-            questionIndex++;
-            clockRunning = false;
-            renderQuestion();
-            //This clears the interval to reset at 0
-            clearInterval(intervalID);
-            showTimer();
-        }
-    };
+       // }
+    });
 
 
 
 
-}
+})
 
 
