@@ -4,10 +4,10 @@
 
 
 # trivia-game
-- - -
+
 
 ## [link to Lyle's Trivia Game/](https://lylekarim.github.io/trivia-game/)
-- - -
+
 
 ## What the project does
 
